@@ -1,0 +1,153 @@
+/* ============================================
+   1. DESIGN TOKENS — the whole look in one place
+   ============================================ */
+:root {
+  /* Paper */
+  --paper: #efe4d0;
+  --paper-deep: #e4d5ba;
+  --paper-edge: #d6c3a1;
+
+  /* Ink */
+  --ink: #2b211c;
+  --ink-soft: #5a4a40;
+  --ink-faint: rgba(60, 40, 30, 0.35);
+
+  /* Burgundy accents */
+  --wine: #6e1f2b;
+  --wine-deep: #4f141d;
+  --wine-soft: #8f3a46;
+
+  /* Type */
+  --font-display: 'Cormorant Garamond', 'Times New Roman', serif;
+  --font-body: 'EB Garamond', Georgia, serif;
+
+  /* Layout */
+  --app-width: 480px;
+  --gutter: 20px;
+  --nav-height: 88px;
+  --radius-arch: 999px 999px 10px 10px;
+
+  /* Phone safe areas (notch + home bar) */
+  --safe-top: env(safe-area-inset-top, 0px);
+  --safe-bottom: env(safe-area-inset-bottom, 0px);
+}
+
+/* ============================================
+   2. RESET — remove browser defaults
+   ============================================ */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
+}
+
+img {
+  display: block;
+  max-width: 100%;
+  height: auto;
+}
+
+button,
+input,
+textarea,
+select {
+  font: inherit;
+  color: inherit;
+}
+
+button {
+  background: none;
+  border: none;
+  cursor: pointer;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+/* ============================================
+   3. THE PAGE — parchment, grain and stains
+   ============================================ */
+body {
+  min-height: 100dvh;
+  background-color: var(--paper);
+  color: var(--ink);
+  font-family: var(--font-body);
+  font-size: 17px;
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+  -webkit-tap-highlight-color: transparent;
+  overscroll-behavior-y: none;
+}
+
+/* Paper texture layer that stays put while content scrolls */
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  background-image:
+    /* fine grain */
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='220' height='220'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 0.35 0 0 0 0 0.25 0 0 0 0 0.15 0.22 0 0 0 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E"),
+    /* old stains */
+    radial-gradient(ellipse at 15% 20%, rgba(150, 110, 60, 0.12), transparent 45%),
+    radial-gradient(ellipse at 85% 65%, rgba(130, 90, 50, 0.10), transparent 50%),
+    /* darker, burnt edges */
+    radial-gradient(ellipse at center, transparent 55%, rgba(110, 75, 40, 0.22) 100%);
+}
+
+/* ============================================
+   4. APP COLUMN — phone width, safe areas
+   ============================================ */
+#root {
+  max-width: var(--app-width);
+  min-height: 100dvh;
+  margin: 0 auto;
+  padding-top: var(--safe-top);
+  padding-bottom: calc(var(--nav-height) + var(--safe-bottom));
+  position: relative;
+}
+
+/* ============================================
+   5. TYPE HELPERS
+   ============================================ */
+h1,
+h2,
+h3 {
+  font-family: var(--font-display);
+  font-weight: 500;
+  line-height: 1.05;
+  color: var(--ink);
+}
+
+.italic-note {
+  font-style: italic;
+  color: var(--ink-soft);
+}
+
+/* ============================================
+   6. ACCESSIBILITY
+   ============================================ */
+:focus-visible {
+  outline: 2px solid var(--wine);
+  outline-offset: 3px;
+  border-radius: 4px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+  }
+}
