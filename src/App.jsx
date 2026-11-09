@@ -1,40 +1,55 @@
-import { Routes, Route, Navigate } from 'react-router-dom'
+import { useEffect, useState } from 'react'
+import { Routes, Route, Navigate, useLocation } from 'react-router-dom'
+import './styles/ui.css'
 
-// Temporary stand-in until each real page is built.
-// As we finish a page, we'll import it and swap it in here.
-function Placeholder({ title }) {
-  return (
-    <main style={{ padding: 'var(--gutter)' }}>
-      <h1>{title}</h1>
-      <p className="italic-note">This chapter is yet to be written.</p>
-    </main>
-  )
+import BottomNav from './components/BottomNav'
+import QuickAdd from './components/QuickAdd'
+import Home from './pages/Home'
+import Tasks from './pages/Tasks'
+import Journal from './pages/Journal'
+import Habits from './pages/Habits'
+import Reminders from './pages/Reminders'
+import Goals from './pages/Goals'
+import Vault from './pages/Vault'
+import Stats from './pages/Stats'
+import Nightfall from './pages/Nightfall'
+import { initNotifications } from './lib/notify'
+
+// Start every page at the top
+function ScrollToTop() {
+  const { pathname } = useLocation()
+  useEffect(() => {
+    window.scrollTo(0, 0)
+  }, [pathname])
+  return null
 }
 
 export default function App() {
+  const [quickOpen, setQuickOpen] = useState(false)
+
+  // Sets up Android notifications (does nothing in the browser)
+  useEffect(() => {
+    initNotifications()
+  }, [])
+
   return (
     <>
+      <ScrollToTop />
       <Routes>
-        {/* Home dashboard */}
-        <Route path="/" element={<Placeholder title="The Chronicler's Journal" />} />
-
-        {/* The six arch cards */}
-        <Route path="/tasks" element={<Placeholder title="Tasks" />} />
-        <Route path="/journal" element={<Placeholder title="Journal" />} />
-        <Route path="/habits" element={<Placeholder title="Habits" />} />
-        <Route path="/reminders" element={<Placeholder title="Reminders" />} />
-        <Route path="/goals" element={<Placeholder title="Goals" />} />
-        <Route path="/vault" element={<Placeholder title="Vault" />} />
-
-        {/* Bottom-nav extras */}
-        <Route path="/stats" element={<Placeholder title="Heatmaps" />} />
-        <Route path="/night" element={<Placeholder title="Nightfall" />} />
-
-        {/* Any unknown address goes home */}
+        <Route path="/" element={<Home />} />
+        <Route path="/tasks" element={<Tasks />} />
+        <Route path="/journal" element={<Journal />} />
+        <Route path="/habits" element={<Habits />} />
+        <Route path="/reminders" element={<Reminders />} />
+        <Route path="/goals" element={<Goals />} />
+        <Route path="/vault" element={<Vault />} />
+        <Route path="/stats" element={<Stats />} />
+        <Route path="/night" element={<Nightfall />} />
         <Route path="*" element={<Navigate to="/" replace />} />
       </Routes>
 
-      {/* <BottomNav /> will live here, outside <Routes>, so it shows on every page */}
+      <BottomNav onAdd={() => setQuickOpen(true)} />
+      <QuickAdd open={quickOpen} onClose={() => setQuickOpen(false)} />
     </>
   )
 }

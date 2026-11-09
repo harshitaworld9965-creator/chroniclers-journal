@@ -22,8 +22,10 @@ jobs:
       - name: Install packages
         run: npm ci
 
-      - name: Build the web app
+            - name: Build the web app
         run: npm run build
+        env:
+          BUILD_TARGET: android
 
       - name: Copy web app into Android project
         run: npx cap sync android
